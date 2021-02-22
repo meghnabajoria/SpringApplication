@@ -19,6 +19,6 @@ public class UserController {
     @PostMapping(path = "/search")
     public MyResponseDTO updateEmployee(@RequestBody MyRequestDTO request) {
 
-        return searchService.searchCompany();
+        return searchService.searchCompany(request);
     }
 }
