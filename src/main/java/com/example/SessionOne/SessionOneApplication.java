@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SessionOneApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(SessionOneApplication.class, args);
+		System.out.println("Hello world");
 	}
 
 }
