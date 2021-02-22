@@ -36,11 +36,15 @@ public class SearchServiceImpl implements SearchService {
             {
                 ProductDTO product =  new ProductDTO();
                 String brandName = productObjectList.get(i).get("name").toString();
-                System.out.println(brandName);
+                String brandDesc = productObjectList.get(i).get("description").toString();
+                int brandPrice = ((Double) productObjectList.get(i).get("salePrice")).intValue();
+                boolean inStock = (int) productObjectList.get(i).get("isInStock") == 1? true:false;
+                //System.out.println(brandName);
 
-                product.setDescription("samsung galaxy s5.....");
+                product.setDescription(brandDesc);
                 product.setTitle(brandName);
-                product.setInStock(true);
+                product.setInStock(inStock);
+                product.setSalePrice(brandPrice);
                 list.add(product);
             }
             responseDTO.setProducts(list);
