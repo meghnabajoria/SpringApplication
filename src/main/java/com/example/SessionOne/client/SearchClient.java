@@ -13,7 +13,7 @@ import java.util.Objects;
  * @since 22/02/21 4:18 PM
  **/
 
-@FeignClient(name = "search-client", url = "10.177.68.40:8983")
+@FeignClient(name = "search-client", url = "10.177.68.77:8983")
 public interface SearchClient {
 
     //API Ref [GET] 10.177.68.40:8983/solr/productCollection/browse?q=samsung

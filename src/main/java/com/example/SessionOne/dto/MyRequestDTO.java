@@ -6,6 +6,16 @@ package com.example.SessionOne.dto;
  **/
 public class MyRequestDTO {
     private String searchTerm;
+    private String Location;
+
+    public String getLocation() {
+        return Location;
+    }
+
+    public void setLocation(String location) {
+        Location = location;
+    }
+
 
     public String getSearchTerm() {
         return searchTerm;
