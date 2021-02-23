@@ -27,52 +27,61 @@ public class SearchServiceImpl implements SearchService {
            // String searchTerm =  request.getSearchTerm();
             //String location = request.getLocation();
 
-            Map<String, Object> products = searchClient.getProducts(request.getSearchTerm());
-            Map<String, Object> location = searchClient.getProducts(("q=stockLocation:"+request.getLocation()));
-
-            List<Map<String, Object>> productObjectList = (List<Map<String, Object>>) ((Map) products.get("response")).get("docs");
-            List<Map<String, Object>> productLocationList = (List<Map<String, Object>>) ((Map) location.get("response")).get("docs");
-
-            List<ProductDTO> list = new ArrayList<>();
-            List<ProductDTO> list2 = new ArrayList<>();
 
             MyResponseDTO responseDTO =  new MyResponseDTO();
 
-            for(int i=0;i<productObjectList.size();i++)
-            {
-                ProductDTO product =  new ProductDTO();
-                String brandName = productObjectList.get(i).get("name").toString();
-                String brandDesc = productObjectList.get(i).get("description").toString();
-                int brandPrice = ((Double) productObjectList.get(i).get("salePrice")).intValue();
-                boolean inStock = (int) productObjectList.get(i).get("isInStock") == 1? true:false;
 
-                product.setDescription(brandDesc);
-                product.setTitle(brandName);
-                product.setInStock(inStock);
-                product.setSalePrice(brandPrice);
-                list.add(product);
-            }
+            Map<String, Object> location = searchClient.getProducts(("stockLocation:"+request.getLocation()));
+            List<Map<String, Object>> productLocationList = (List<Map<String, Object>>) ((Map) location.get("response")).get("docs");
 
 
-            for(int i=0;i<productLocationList.size();i++)
-            {
-                ProductDTO product =  new ProductDTO();
-                String brandName = productLocationList.get(i).get("name").toString();
-                String brandDesc = productLocationList.get(i).get("description").toString();
-                int brandPrice = ((Double) productLocationList.get(i).get("salePrice")).intValue();
-                boolean inStock = (int) productLocationList.get(i).get("isInStock") == 1? true:false;
+        List<ProductDTO> list2 = new ArrayList<>();
 
-                product.setDescription(brandDesc);
-                product.setTitle(brandName);
-                product.setInStock(inStock);
-                product.setSalePrice(brandPrice);
-                list2.add(product);
-            }
+        List<ProductDTO> list = getStringObjectMap(request.getSearchTerm());
 
 
-            responseDTO.setProducts(list);
-            responseDTO.setLocationBasedProducts(list2);
+        for(int i=0;i<productLocationList.size();i++)
+        {
+            ProductDTO product =  new ProductDTO();
+            String brandName = productLocationList.get(i).get("name").toString();
+            String brandDesc = productLocationList.get(i).get("description").toString();
+            int brandPrice = ((Double) productLocationList.get(i).get("salePrice")).intValue();
+            boolean inStock = (int) productLocationList.get(i).get("isInStock") == 1? true:false;
 
-            return responseDTO;
+            product.setDescription(brandDesc);
+            product.setTitle(brandName);
+            product.setInStock(inStock);
+            product.setSalePrice(brandPrice);
+            list2.add(product);
+        }
+
+        responseDTO.setProducts(list);
+        responseDTO.setLocationBasedProducts(list2);
+
+        return responseDTO;
     }
+
+    private List<ProductDTO> getStringObjectMap(String query)
+    {
+        Map<String, Object> products = searchClient.getProducts(query);
+        List<Map<String, Object>> productObjectList = (List<Map<String, Object>>) ((Map) products.get("response")).get("docs");
+        List<ProductDTO> list = new ArrayList<>();
+        for(int i=0;i<productObjectList.size();i++)
+        {
+            ProductDTO product =  new ProductDTO();
+            String brandName = productObjectList.get(i).get("name").toString();
+            String brandDesc = productObjectList.get(i).get("description").toString();
+            int brandPrice = ((Double) productObjectList.get(i).get("salePrice")).intValue();
+            boolean inStock = (int) productObjectList.get(i).get("isInStock") == 1? true:false;
+
+            product.setDescription(brandDesc);
+            product.setTitle(brandName);
+            product.setInStock(inStock);
+            product.setSalePrice(brandPrice);
+            list.add(product);
+        }
+
+        return list;
+    }
+
 }
